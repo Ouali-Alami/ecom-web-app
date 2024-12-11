@@ -1,10 +1,99 @@
 # EcomWebApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.4.
+This sample Angular web app show:
 
-## Development server
+How a client can communicate with spring services.
 
-To start a local development server, run:
+How to build simple spring services.
+
+How to configure your services in various ways (mixed here for demonstration purposes):
+
+    -Centralized your config in a service config-service.
+    -Directly within the service itself, ensuring self-sufficient configuration and management. 
+    -via Consul (so you can directly do your config via consul and config-service is not required in this case).
+
+How to use a gateway-service to handle the clients (here: angular ecom-web-app) requests with single entry point and how to resolve corss issues via the gateway-service configuration.
+
+How to manage the different services with Consul.
+
+## Design
+
+    Todo: draw flow diagram
+
+## Required
+
+### **Java 17+**
+### **Maven**
+### **Git**
+### **Angular version 19.0.4.**
+### **Consul v1.17.3**
+
+
+##### ensure that mvn use java 17
+```bash
+# quick help(unix):
+java -version #java 17
+mvn -v #ensure mvn use java 17
+# if not installed
+sudo apt-get update
+sudo apt install openjdk-17
+sudo apt install maven
+#optional:
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+echo "export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> ~/.bashrc
+echo "export PATH=\$JAVA_HOME/bin:\$PATH" >> ~/.bashrc
+source ~/.bashrc
+```
+For Consul look the [official documentation from hashicorp] (https://developer.hashicorp.com/consul/docs/v1.17.x/install.)
+
+## Installation & Configuration
+
+### Clone the repositories:
+```bash
+
+git clone git@github.com:Ouali-Alami/config-service.git
+git clone git@github.com:Ouali-Alami/gateway-service.git
+git clone git@github.com:Ouali-Alami/inventory-service.git
+git clone git@github.com:Ouali-Alami/customer-service.git
+git clone git@github.com:Ouali-Alami/order-service.git
+```
+⚠️ Notes:
+
+At the start of the order-service needs to communicate with the inventory-service and customer-service to create some orders,
+that means you need to run order-service after inventory-service and customer-service (big dependencies at the order-service start here but just for the demo purpose) .
+While each service can run independently, they can also be managed through the gateway-service, which acts as a centralized entry point. 
+This service facilitates communication between services and with external clients, handling aspects such as security, authorization, and request routing.
+The config-service interacts with the ecom-services to retrieve the necessary configuration data.
+
+Key Concepts:
+To fully grasp the application’s architecture, it’s important to follow the relevant configuration paths. 
+The properties set within these configurations will provide a comprehensive overview of the application.
+
+Design:
+Each service is designed to operate independently, but it requires modification to manage its own data and configuration. 
+This ensures that each microservice remains decoupled and self-sufficient, while still being able to integrate seamlessly within a larger ecosystem.
+
+If you've grasped the explanations, you'll be able to structure your project using various architectural approaches, 
+such as monolithic, microservices, or serverless architectures.
+
+## Consul
+
+To start Consul in server mode(quorum, write, read etc...) with your ip (localhost or network):
+
+```bash
+YOUR_IP=$(hostname -I)
+consul agent -server -bootstrap-expect=1 -data-dir=consul-data -ui -bind=$YOUR_IP
+#here consul artifacts(kv,health etc...) are saved in consul-data/ directory feel free to change it with your path...
+```
+#### 
+Once the server is running, open your browser and navigate to `http://localhost:8500/`. The application will automatically reload whenever you modify any of the source files.
+
+⚠️At the restart of consul if you want a clean workspace(no kv, etc.), ensure that consul-data directory is empty
+
+## Web-app
+
+To start the Angular ecom-web-app with a local development server, run:
 
 ```bash
 ng serve
@@ -12,48 +101,20 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
+## Services 
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+To start spring services, run:
 
 ```bash
-ng generate --help
+mvn spring-boot:run
 ```
 
-## Building
+## Config:
 
-To build the project run:
+To refresh your own config with actuator, run :
 
 ```bash
-ng build
+curl -X POST http://localhost:8084/actuator/refresh
 ```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
 ## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
