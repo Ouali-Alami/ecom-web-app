@@ -10,7 +10,7 @@ How to configure your services in various ways (mixed here for demonstration pur
 
     -Centralized your config in a service config-service.
     -Directly within the service itself, ensuring self-sufficient configuration and management. 
-    -via Consul (so you can directly do your config via consul and config-service is not required in this case).
+    -via Consul (iin this case config-service is not required).
 
 How to use a gateway-service to handle the clients (here: angular ecom-web-app) requests with single entry point and how to resolve corss issues via the gateway-service configuration.
 
@@ -58,12 +58,12 @@ git clone git@github.com:Ouali-Alami/inventory-service.git
 git clone git@github.com:Ouali-Alami/customer-service.git
 git clone git@github.com:Ouali-Alami/order-service.git
 ```
-⚠️ Notes:
+⚠️ Warning:
 
-At the start of the order-service needs to communicate with the inventory-service and customer-service to create some orders,
-that means you need to run order-service after inventory-service and customer-service (big dependencies at the order-service start here but just for the demo purpose) .
-While each service can run independently, they can also be managed through the gateway-service, which acts as a centralized entry point. 
+While each service have a unique entry-point domain, they can also be managed through the gateway-service, which acts as a centralized entry-point. 
+
 This service facilitates communication between services and with external clients, handling aspects such as security, authorization, and request routing.
+
 The config-service interacts with the ecom-services to retrieve the necessary configuration data.
 
 Key Concepts:
@@ -103,7 +103,18 @@ Once the server is running, open your browser and navigate to `http://localhost:
 
 ## Services 
 
-To start spring services, run:
+
+⚠️ Notes:
+
+At the start, the order-service required to communicate with the inventory-service and customer-service to create some orders, 
+just to demonstrate the exchange between services.
+
+If you want you can directly create your data in the order-service by using the class Customer and Inventory in the model package to break these dependencies.
+
+That means you need to respect an orders to start the services:
+1-costumer-service
+2-inventory-service
+3-order-service
 
 ```bash
 mvn spring-boot:run

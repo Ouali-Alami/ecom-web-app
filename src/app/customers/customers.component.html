@@ -8,10 +8,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let p of customers._embedded.customers">
-      <td>{{p.id}}</td>
-      <td>{{p.name}}</td>
-      <td>{{p.email}}</td>
+    <tr *ngFor="let c of customers._embedded.customers">
+      <td>{{c.id}}</td>
+      <td>{{c.name}}</td>
+      <td>{{c.email}}</td>
+      <td>
+        <button class="btn btn-success" (click)="getOrders(c)">Orders</button>
+      </td>
     </tr>
     </tbody>
   </table>
