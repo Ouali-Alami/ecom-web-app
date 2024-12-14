@@ -8,11 +8,13 @@ How to build simple spring services.
 
 How to configure your services in various ways (mixed here for demonstration purposes):
 
-    -Centralized your config in a service config-service.
-    -Directly within the service itself, ensuring self-sufficient configuration and management. 
-    -via Consul (iin this case config-service is not required).
+-Centralized your config in a service config-service.
+-Directly within the service itself, ensuring self-sufficient configuration and management. 
+-via Consul (iin this case config-service is not required).
 
-How to use a gateway-service to handle the clients (here: angular ecom-web-app) requests with single entry point and how to resolve corss issues via the gateway-service configuration.
+How to use a gateway-service to handle the clients (here: angular ecom-web-app) requests with a single entry point.
+
+How to resolve corss issues via the gateway-service configuration.
 
 How to manage the different services with Consul.
 
@@ -51,8 +53,7 @@ For Consul look the [official documentation from hashicorp] (https://developer.h
 
 ### Clone the repositories:
 ```bash
-
-git clone git@github.com:Ouali-Alami/config-service.git
+git clone git@github.com:Ouali-Alami/ecom-web-app.git
 git clone git@github.com:Ouali-Alami/gateway-service.git
 git clone git@github.com:Ouali-Alami/inventory-service.git
 git clone git@github.com:Ouali-Alami/customer-service.git
@@ -62,17 +63,13 @@ git clone git@github.com:Ouali-Alami/order-service.git
 
 While each service have a unique entry-point domain, they can also be managed through the gateway-service, which acts as a centralized entry-point. 
 
-This service facilitates communication between services and with external clients, handling aspects such as security, authorization, and request routing.
-
-The config-service interacts with the ecom-services to retrieve the necessary configuration data.
+THe gateway-service facilitate communication between services and with external clients, handling aspects such as security, authorization, and request routing.
 
 Key Concepts:
-To fully grasp the application’s architecture, it’s important to follow the relevant configuration paths. 
-The properties set within these configurations will provide a comprehensive overview of the application.
+The properties set will provide a comprehensive overview of the application.
 
 Design:
-Each service is designed to operate independently, but it requires modification to manage its own data and configuration. 
-This ensures that each microservice remains decoupled and self-sufficient, while still being able to integrate seamlessly within a larger ecosystem.
+THe microservice design remains decoupled and self-sufficient, while still being able to integrate seamlessly within a larger ecosystem.
 
 If you've grasped the explanations, you'll be able to structure your project using various architectural approaches, 
 such as monolithic, microservices, or serverless architectures.
@@ -109,12 +106,14 @@ Once the server is running, open your browser and navigate to `http://localhost:
 At the start, the order-service required to communicate with the inventory-service and customer-service to create some orders, 
 just to demonstrate the exchange between services.
 
-If you want you can directly create your data in the order-service by using the class Customer and Inventory in the model package to break these dependencies.
+If you want you can break these dependencies create your own order-service data by using the Customer and Inventory classes from the model package:
 
-That means you need to respect an orders to start the services:
-1-costumer-service
-2-inventory-service
-3-order-service
+But in the meantime please start services in these order:
+
+1-gateway-service
+2-costumer-service
+3-inventory-service
+4-order-service
 
 ```bash
 mvn spring-boot:run
@@ -128,4 +127,19 @@ To refresh your own config with actuator, run :
 curl -X POST http://localhost:8084/actuator/refresh
 ```
 
-## Additional Resources
+## TEST
+-Disconnect the Gateway: The client will no longer be able to retrieve data from the services.
+-Remove the Gateway and Directly Expose Service Endpoints: By bypassing the gateway and providing direct access to the service endpoints, you will be able to access the services' data.
+-Extend Application Functionality: You can enhance the app by cloning the billing-service from my GitHub repository and integrating it into the application.
+-Delegate Configuration Management to Consul: Modify the application properties to assign the responsibility of handling the application's configuration to Consul.
+-Develop and Integrate Custom Services: Create your own services and integrate them into the existing application.
+-Transition to a Monolithic Architecture: Redesign the application to adopt a monolithic architecture, consolidating both the frontend and backend within a single cohesive system.
+
+## Contributions and Pull Requests
+If you have any questions or would like to contribute to the project by adding new features, fixing bugs, or improving documentation, please feel free to open a pull request. Here are the steps for contributing:
+
+Fork the repository.
+Create a new branch for your feature or bug fix (git checkout -b feature/my-new-feature).
+Commit your changes (git commit -am 'Add a new feature').
+Push your changes to your fork (git push origin feature/my-new-feature).
+Open a pull request on the main repository.
