@@ -8,10 +8,6 @@ How to build simple spring services.
 
 How to configure your services in various ways (mixed here for demonstration purposes):
 
--Centralized your config in a service config-service.
--Directly within the service itself, ensuring self-sufficient configuration and management. 
--via Consul (iin this case config-service is not required).
-
 How to use a gateway-service to handle the clients (here: angular ecom-web-app) requests with a single entry point.
 
 How to resolve corss issues via the gateway-service configuration.
@@ -66,9 +62,11 @@ While each service have a unique entry-point domain, they can also be managed th
 THe gateway-service facilitate communication between services and with external clients, handling aspects such as security, authorization, and request routing.
 
 Key Concepts:
+
 The properties set will provide a comprehensive overview of the application.
 
 Design:
+
 THe microservice design remains decoupled and self-sufficient, while still being able to integrate seamlessly within a larger ecosystem.
 
 If you've grasped the explanations, you'll be able to structure your project using various architectural approaches, 
@@ -129,17 +127,27 @@ curl -X POST http://localhost:8084/actuator/refresh
 
 ## TEST
 -Disconnect the Gateway: The client will no longer be able to retrieve data from the services.
+
 -Remove the Gateway and Directly Expose Service Endpoints: By bypassing the gateway and providing direct access to the service endpoints, you will be able to access the services' data.
+
 -Extend Application Functionality: You can enhance the app by cloning the billing-service from my GitHub repository and integrating it into the application.
+
 -Delegate Configuration Management to Consul: Modify the application properties to assign the responsibility of handling the application's configuration to Consul.
+
 -Develop and Integrate Custom Services: Create your own services and integrate them into the existing application.
+
 -Transition to a Monolithic Architecture: Redesign the application to adopt a monolithic architecture, consolidating both the frontend and backend within a single cohesive system.
 
 ## Contributions and Pull Requests
+
 If you have any questions or would like to contribute to the project by adding new features, fixing bugs, or improving documentation, please feel free to open a pull request. Here are the steps for contributing:
 
 Fork the repository.
+
 Create a new branch for your feature or bug fix (git checkout -b feature/my-new-feature).
+
 Commit your changes (git commit -am 'Add a new feature').
+
 Push your changes to your fork (git push origin feature/my-new-feature).
+
 Open a pull request on the main repository.
